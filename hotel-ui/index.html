@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Management UI</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        input, button { margin: 5px; padding: 5px; }
+        section { margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+<h1>Hotel Management UI</h1>
+
+<section>
+    <h2>Kunde erstellen</h2>
+    <input id="name" placeholder="Name" />
+    <input id="address" placeholder="Adresse" />
+    <input id="birthdate" type="date" />
+    <button onclick="createCustomer()">Erstellen</button>
+</section>
+
+<section>
+    <h2>Zimmer buchen</h2>
+    <input id="roomNumber" placeholder="Zimmernummer" />
+    <input id="customerId" placeholder="Kundennummer" />
+    <input id="from" type="date" />
+    <input id="to" type="date" />
+    <button onclick="bookRoom()">Buchen</button>
+</section>
+
+<section>
+    <h2>Alle Kunden anzeigen</h2>
+    <button onclick="getCustomers()">Laden</button>
+    <pre id="customerList"></pre>
+</section>
+
+<script>
+    const commandBase = 'http://localhost:8082'; // Command-Side Port
+    const queryBase = 'http://localhost:8083';   // Query-Side Port
+
+    function createCustomer() {
+        const data = {
+            name: document.getElementById('name').value,
+            address: document.getElementById('address').value,
+            birthdate: document.getElementById('birthdate').value
+        };
+
+        fetch(`${commandBase}/api/createCustomer`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.text())
+            .then(alert)
+            .catch(err => alert('Fehler: ' + err));
+    }
+
+    function bookRoom() {
+        const data = {
+            roomNumber: document.getElementById('roomNumber').value,
+            customerId: document.getElementById('customerId').value,
+            fromDate: document.getElementById('from').value,
+            toDate: document.getElementById('to').value
+        };
+
+        fetch(`${commandBase}/bookings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.text())
+            .then(alert)
+            .catch(err => alert('Fehler: ' + err));
+    }
+
+    function getCustomers() {
+        fetch(`${queryBase}/customers`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('customerList').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(err => alert('Fehler: ' + err));
+    }
+</script>
+</body>
+</html>

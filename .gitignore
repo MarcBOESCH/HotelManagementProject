@@ -1,0 +1,17 @@
+# IDE
+.idea/
+*.iml
+
+# Build
+/build/
+.gradle/
+out/
+
+# System
+.DS_Store
+
+# Logs
+*.log
+
+# OS / Misc
+__MACOSX/
