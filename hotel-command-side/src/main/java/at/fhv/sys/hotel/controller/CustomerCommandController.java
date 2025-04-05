@@ -18,9 +18,8 @@ public class CustomerCommandController {
 
     @POST
     @Path("/createCustomer")
-    public String createCustomer(@QueryParam("customerId") String customerId, @QueryParam("name") String name, @QueryParam("email") String email) {
-        return customerAggregate.handle(new CreateCustomerCommand(customerId, name, email));
-
+    public String createCustomer(CreateCustomerCommand command) {
+        return customerAggregate.handle(command);
     }
 
     @POST
