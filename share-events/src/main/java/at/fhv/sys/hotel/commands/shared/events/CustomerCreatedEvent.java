@@ -1,16 +1,18 @@
 package at.fhv.sys.hotel.commands.shared.events;
 
+import java.time.LocalDate;
+
 public class CustomerCreatedEvent {
 
     private String userId;
     private String name;
     private String email;
     private String address;
-    private String birthdate;
+    private LocalDate birthdate;
 
     public CustomerCreatedEvent() {}
 
-    public CustomerCreatedEvent(String userId, String name, String email, String address, String birthdate) {
+    public CustomerCreatedEvent(String userId, String name, String email, String address, LocalDate birthdate) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -21,6 +23,7 @@ public class CustomerCreatedEvent {
     public String getUserId() {
         return userId;
     }
+
     public String getName() {
         return name;
     }
@@ -30,7 +33,7 @@ public class CustomerCreatedEvent {
     public String getAddress() {
         return address;
     }
-    public String getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
@@ -45,6 +48,9 @@ public class CustomerCreatedEvent {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override

@@ -13,5 +13,8 @@ out/
 # Logs
 *.log
 
+# Eventstore Data
+eventstore-data/
+
 # OS / Misc
 __MACOSX/

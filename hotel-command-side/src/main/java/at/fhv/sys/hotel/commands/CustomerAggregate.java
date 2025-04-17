@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -16,8 +17,9 @@ public class CustomerAggregate {
     EventBusClient eventClient;
 
     public String handle(CreateCustomerCommand command) {
+        String userId = UUID.randomUUID().toString();
         CustomerCreatedEvent event = new CustomerCreatedEvent(
-                command.userId(),
+                userId,
                 command.name(),
                 command.email(),
                 command.address(),
@@ -26,7 +28,7 @@ public class CustomerAggregate {
 
         Logger.getAnonymousLogger().info(eventClient.processCustomerCreatedEvent(event).toString());
 
-        return command.userId();
+        return userId;
     }
 
 }

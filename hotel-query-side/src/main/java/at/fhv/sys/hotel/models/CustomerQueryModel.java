@@ -3,6 +3,8 @@ package at.fhv.sys.hotel.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 @Entity
 public class CustomerQueryModel {
 
@@ -12,11 +14,11 @@ public class CustomerQueryModel {
     private String name;
     private String email;
     private String address;
-    private String birthdate;
+    private LocalDate birthdate;
 
     public CustomerQueryModel() {}
 
-    public CustomerQueryModel(String userId, String name, String email, String address, String birthdate) {
+    public CustomerQueryModel(String userId, String name, String email, String address, LocalDate birthdate) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -60,7 +62,7 @@ public class CustomerQueryModel {
         this.address = address;
     }
 
-    public void setBirthdate(String birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 }
