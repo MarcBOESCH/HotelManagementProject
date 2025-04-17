@@ -13,11 +13,15 @@ public class EventProcessingService {
     @RestClient
     QueryClient queryClient;
 
+    @Inject
+    EventStoreService eventStoreService;
+
+
     public EventProcessingService() {
     }
 
     public void processEvent(String stream, Object eventObject) {
+        eventStoreService.saveEvent(stream, eventObject);
         queryClient.forwardCustomerCreatedEvent((CustomerCreatedEvent) eventObject);
-        // TBD process Events in EventDBStore
     }
 }

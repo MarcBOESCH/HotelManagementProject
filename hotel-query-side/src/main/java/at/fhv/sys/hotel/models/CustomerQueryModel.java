@@ -10,7 +10,6 @@ public class CustomerQueryModel {
 
     @Id
     private String userId;
-
     private String name;
     private String email;
     private String address;

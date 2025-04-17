@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: hotel-postgres
+    environment:
+      POSTGRES_DB: querydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    restart: always
+
+  eventstore:
+    image: eventstore/eventstore:latest
+    container_name: eventstore
+    platform: linux/amd64
+    ports:
+      - "2113:2113"   # Web UI
+      - "1113:1113"   # gRPC TCP
+    environment:
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+    volumes:
+      - ./eventstore-data:/var/lib/eventstore
+    restart: always

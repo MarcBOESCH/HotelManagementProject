@@ -18,3 +18,9 @@ eventstore-data/
 
 # OS / Misc
 __MACOSX/
+
+# Event Store DB
+eventstore-data/
+
+# PostgreSQL Query DB
+postgres-data/
