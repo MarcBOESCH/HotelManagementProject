@@ -12,6 +12,8 @@ import org.jboss.logmanager.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventsController {
+
+    private static int eventId = 0;
     @Inject
     EventProcessingService eventStoreService;
 
