@@ -2,6 +2,7 @@ package at.fhv.sys.hotel.controller;
 
 import at.fhv.sys.hotel.commands.CreateCustomerCommand;
 import at.fhv.sys.hotel.commands.CustomerAggregate;
+import at.fhv.sys.hotel.commands.UpdateCustomerCommand;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -23,7 +24,7 @@ public class CustomerCommandController {
     @POST
     @Path("/createCustomer")
     public Response createCustomer(@Valid CreateCustomerCommand command) {
-        String customerId = customerAggregate.handle(command);
+        String customerId = customerAggregate.handleCreateCustomer(command);
         return Response.status(Response.Status.CREATED)
                 .entity(Map.of("customerId", customerId))
                 .build();
@@ -31,9 +32,9 @@ public class CustomerCommandController {
 
     @POST
     @Path("/{customerId}/update")
-    public String updateCustomer(@PathParam("customerId") String customerId, @QueryParam("email") String email) {
-        // TBD: process customer
-        return "Customer updated";
+    public Response updateCustomer(@PathParam("customerId") String customerId, @Valid UpdateCustomerCommand command) {
+        customerAggregate.handleUpdateCustomer(customerId, command);
+        return Response.noContent().build();
     }
 
     @POST

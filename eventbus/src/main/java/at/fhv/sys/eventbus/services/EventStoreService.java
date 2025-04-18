@@ -3,6 +3,7 @@ package at.fhv.sys.eventbus.services;
 import com.eventstore.dbclient.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -18,6 +19,7 @@ public class EventStoreService {
     public EventStoreService(@ConfigProperty(name= "eventstoredb.uri") String connectionUri) {
         this.objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
+                .registerModule(new Jdk8Module())
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         System.out.println(connectionUri);

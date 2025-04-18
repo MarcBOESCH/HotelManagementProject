@@ -1,8 +1,10 @@
 package at.fhv.sys.eventbus.client;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -17,4 +19,8 @@ public interface QueryClient {
     @Consumes(MediaType.APPLICATION_JSON)
     void forwardCustomerCreatedEvent(CustomerCreatedEvent event);
 
+    @POST
+    @Path("/customerUpdated")
+    @Consumes(MediaType.APPLICATION_JSON)
+    void forwardCustomerUpdatedEvent(CustomerUpdatedEvent event);
    }

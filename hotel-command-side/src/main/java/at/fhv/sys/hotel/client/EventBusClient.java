@@ -1,12 +1,10 @@
 package at.fhv.sys.hotel.client;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Produces;
+import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import jakarta.ws.rs.Path;
 
 @RegisterRestClient(configKey="hotel-eventbus-api-client")
 @Path("/api")
@@ -17,4 +15,10 @@ public interface EventBusClient {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     CustomerCreatedEvent processCustomerCreatedEvent(CustomerCreatedEvent event);
+
+    @POST
+    @Path("/customerUpdated")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    CustomerUpdatedEvent processCustomerUpdatedEvent(CustomerUpdatedEvent event);
 }

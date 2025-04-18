@@ -1,12 +1,15 @@
 package at.fhv.sys.hotel.projection;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import at.fhv.sys.hotel.models.CustomerQueryModel;
 import at.fhv.sys.hotel.models.CustomerQueryPanacheModel;
 import at.fhv.sys.hotel.service.CustomerService;
 import at.fhv.sys.hotel.service.CustomerServicePanache;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.NoResultException;
 
 import java.util.logging.Logger;
 
@@ -40,5 +43,20 @@ public class CustomerProjection {
         customer.birthdate = customerCreatedEvent.getBirthdate();
 
         customerServicePanache.createCustomer(customer);
+    }
+
+    public void processCustomerUpdatedEvent(CustomerUpdatedEvent customerUpdatedEvent) {
+        Logger.getAnonymousLogger().info("Processing event: " + customerUpdatedEvent);
+
+            CustomerQueryModel customer = customerService.findCustomerById(customerUpdatedEvent.getUserId());
+            customerUpdatedEvent.getName().ifPresent(customer::setName);
+            customerUpdatedEvent.getEmail().ifPresent(customer::setEmail);
+            customerUpdatedEvent.getAddress().ifPresent(customer::setAddress);
+            customerUpdatedEvent.getBirthdate().ifPresent(customer::setBirthdate);
+
+            customerService.updateCustomer(customer);
+
+            CustomerQueryPanacheModel customerPanache = customerServicePanache.findCustomerById(customerUpdatedEvent.getUserId());
+
     }
 }

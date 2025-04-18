@@ -2,6 +2,7 @@ package at.fhv.sys.hotel.commands;
 
 import at.fhv.sys.hotel.client.EventBusClient;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -16,10 +17,9 @@ public class CustomerAggregate {
     @RestClient
     EventBusClient eventClient;
 
-    public String handle(CreateCustomerCommand command) {
-        String userId = UUID.randomUUID().toString();
+    public String handleCreateCustomer(CreateCustomerCommand command) {
         CustomerCreatedEvent event = new CustomerCreatedEvent(
-                userId,
+                command.userId(),
                 command.name(),
                 command.email(),
                 command.address(),
@@ -28,7 +28,21 @@ public class CustomerAggregate {
 
         Logger.getAnonymousLogger().info(eventClient.processCustomerCreatedEvent(event).toString());
 
-        return userId;
+        return command.userId().toString();
+    }
+
+    public String handleUpdateCustomer(String customerId, UpdateCustomerCommand command) {
+        CustomerUpdatedEvent event = new CustomerUpdatedEvent(
+                customerId,
+                command.name(),
+                command.email(),
+                command.address(),
+                command.birthdate()
+        );
+
+        Logger.getAnonymousLogger().info(eventClient.processCustomerUpdatedEvent(event).toString());
+
+        return customerId;
     }
 
 }

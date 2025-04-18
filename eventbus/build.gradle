@@ -20,6 +20,8 @@ dependencies {
     implementation 'com.eventstore:db-client-java:5.3.0'
     // Jackson support for Java DateTime
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    // Jackson support for Optional<>
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     implementation project(':share-events')

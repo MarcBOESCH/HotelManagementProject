@@ -12,9 +12,17 @@ public class CustomerServicePanache {
     public List<CustomerQueryPanacheModel> getAllCustomers() {
         return CustomerQueryPanacheModel.listAll();
     }
+    public CustomerQueryPanacheModel findCustomerById(String customerId) {
+        return CustomerQueryPanacheModel.findById(customerId);
+    }
 
     @Transactional
     public void createCustomer(CustomerQueryPanacheModel customer) {
+        customer.persist();
+    }
+
+    @Transactional
+    public void updateCustomer(CustomerQueryPanacheModel customer) {
         customer.persist();
     }
 }
