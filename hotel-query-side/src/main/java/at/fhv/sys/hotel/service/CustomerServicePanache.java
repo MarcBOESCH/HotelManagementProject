@@ -13,7 +13,8 @@ public class CustomerServicePanache {
         return CustomerQueryPanacheModel.listAll();
     }
     public CustomerQueryPanacheModel findCustomerById(String customerId) {
-        return CustomerQueryPanacheModel.findById(customerId);
+        // Searches for userId
+        return CustomerQueryPanacheModel.<CustomerQueryPanacheModel>find("userId", customerId).firstResult();
     }
 
     @Transactional
@@ -21,8 +22,4 @@ public class CustomerServicePanache {
         customer.persist();
     }
 
-    @Transactional
-    public void updateCustomer(CustomerQueryPanacheModel customer) {
-        customer.persist();
-    }
 }

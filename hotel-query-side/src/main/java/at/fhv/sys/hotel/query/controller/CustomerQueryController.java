@@ -2,9 +2,9 @@ package at.fhv.sys.hotel.query.controller;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
-import at.fhv.sys.hotel.models.CustomerQueryModel;
+import at.fhv.sys.hotel.models.CustomerQueryPanacheModel;
 import at.fhv.sys.hotel.projection.CustomerProjection;
-import at.fhv.sys.hotel.service.CustomerService;
+import at.fhv.sys.hotel.service.CustomerServicePanache;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -22,7 +22,7 @@ public class CustomerQueryController {
     CustomerProjection customerProjection;
 
     @Inject
-    CustomerService customerService;
+    CustomerServicePanache customerService;
 
     public CustomerQueryController() {
     }
@@ -45,7 +45,7 @@ public class CustomerQueryController {
 
     @GET
     @Path("/customers")
-    public List<CustomerQueryModel> getAllCustomers() {
+    public List<CustomerQueryPanacheModel> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 }
