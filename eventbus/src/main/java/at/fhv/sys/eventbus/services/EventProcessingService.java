@@ -2,6 +2,7 @@ package at.fhv.sys.eventbus.services;
 
 import at.fhv.sys.eventbus.client.QueryClient;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -29,5 +30,10 @@ public class EventProcessingService {
     public void processCustomerUpdatedEvent(String stream, Object eventObject) {
         eventStoreService.saveEvent(stream, eventObject);
         queryClient.forwardCustomerUpdatedEvent((CustomerUpdatedEvent) eventObject);
+    }
+
+    public void processCustomerDeletedEvent(String stream, Object eventObject) {
+        eventStoreService.saveEvent(stream, eventObject);
+        queryClient.forwardCustomerDeletedEvent((CustomerDeletedEvent) eventObject);
     }
 }

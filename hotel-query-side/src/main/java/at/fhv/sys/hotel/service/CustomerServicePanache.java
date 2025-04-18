@@ -22,4 +22,8 @@ public class CustomerServicePanache {
         customer.persist();
     }
 
+    @Transactional
+    public void deleteCustomer(CustomerQueryPanacheModel customer) {
+        customer.delete();
+    }
 }

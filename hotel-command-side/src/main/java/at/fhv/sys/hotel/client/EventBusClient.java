@@ -1,6 +1,7 @@
 package at.fhv.sys.hotel.client;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -21,4 +22,10 @@ public interface EventBusClient {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     CustomerUpdatedEvent processCustomerUpdatedEvent(CustomerUpdatedEvent event);
+
+    @POST
+    @Path("/customerDeleted")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    CustomerDeletedEvent processCustomerDeletedEvent(CustomerDeletedEvent event);
 }

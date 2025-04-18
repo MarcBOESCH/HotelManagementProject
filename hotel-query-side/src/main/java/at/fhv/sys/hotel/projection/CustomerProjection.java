@@ -1,6 +1,7 @@
 package at.fhv.sys.hotel.projection;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import at.fhv.sys.hotel.models.CustomerQueryPanacheModel;
 import at.fhv.sys.hotel.service.CustomerServicePanache;
@@ -43,5 +44,17 @@ public class CustomerProjection {
             customerUpdatedEvent.getEmail().ifPresent(customer::setEmail);
             customerUpdatedEvent.getAddress().ifPresent(customer::setAddress);
             customerUpdatedEvent.getBirthdate().ifPresent(customer::setBirthdate);
+    }
+
+    public void processCustomerDeletedEvent(CustomerDeletedEvent customerDeletedEvent) {
+        Logger.getAnonymousLogger().info("Processing event: " + customerDeletedEvent);
+
+        CustomerQueryPanacheModel customer = customerServicePanache.findCustomerById(customerDeletedEvent.getCustomerId());
+        if (customer == null) {
+            Logger.getAnonymousLogger().info("Could not find customer with id: " + customerDeletedEvent.getCustomerId());
+            return;
+        }
+
+        customerServicePanache.deleteCustomer(customer);
     }
 }

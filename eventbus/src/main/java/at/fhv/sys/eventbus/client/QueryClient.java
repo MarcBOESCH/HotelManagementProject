@@ -1,6 +1,7 @@
 package at.fhv.sys.eventbus.client;
 
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -23,4 +24,9 @@ public interface QueryClient {
     @Path("/customerUpdated")
     @Consumes(MediaType.APPLICATION_JSON)
     void forwardCustomerUpdatedEvent(CustomerUpdatedEvent event);
-   }
+
+    @POST
+    @Path("/customerDeleted")
+    @Consumes(MediaType.APPLICATION_JSON)
+    void forwardCustomerDeletedEvent(CustomerDeletedEvent event);
+}

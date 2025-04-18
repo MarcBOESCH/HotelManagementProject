@@ -2,6 +2,7 @@ package at.fhv.sys.hotel.controller;
 
 import at.fhv.sys.hotel.commands.CreateCustomerCommand;
 import at.fhv.sys.hotel.commands.CustomerAggregate;
+import at.fhv.sys.hotel.commands.DeleteCustomerCommand;
 import at.fhv.sys.hotel.commands.UpdateCustomerCommand;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -39,8 +40,8 @@ public class CustomerCommandController {
 
     @POST
     @Path("/{customerId}/delete")
-    public String deleteCustomer(@PathParam("customerId") String customerId) {
-        // TBD: delete customer
-        return "Customer deleted";
+    public Response deleteCustomer(@PathParam("customerId") String customerId) {
+        customerAggregate.handleDeleteCustomer(new DeleteCustomerCommand(customerId));
+        return Response.noContent().build();
     }
 }
