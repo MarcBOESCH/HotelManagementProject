@@ -44,4 +44,9 @@ public class EventProcessingService {
         queryClient.forwardBookingCanceledEvent((BookingCanceledEvent) eventObject);
         eventStoreService.saveEvent(stream, eventObject);
     }
+
+    public void processBookingPaidEvent(String stream, Object eventObject) {
+        queryClient.forwardBookingPaidEvent((BookingPaidEvent) eventObject);
+        eventStoreService.saveEvent(stream, eventObject);
+    }
 }

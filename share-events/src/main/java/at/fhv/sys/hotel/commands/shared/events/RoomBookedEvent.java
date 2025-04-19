@@ -63,7 +63,7 @@ public class RoomBookedEvent {
     @Override
     public String toString() {
         return "RoomBookedEvent{" +
-                "reservationId='" + bookingId + '\'' +
+                "bookingId='" + bookingId + '\'' +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", customerId='" + customerId + '\'' +
                 ", fromDate=" + fromDate +

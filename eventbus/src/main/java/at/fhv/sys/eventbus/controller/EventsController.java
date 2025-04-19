@@ -59,4 +59,12 @@ public class EventsController {
         return Response.ok(event).build();
     }
 
+    @POST
+    @Path("/bookingPaid")
+    public Response bookingPaid(BookingPaidEvent event) {
+        Logger.getAnonymousLogger().info("Received event: " + event);
+        eventStoreService.processBookingPaidEvent("booking-" + event.getBookingId(), event);
+        return Response.ok(event).build();
+    }
+
 }

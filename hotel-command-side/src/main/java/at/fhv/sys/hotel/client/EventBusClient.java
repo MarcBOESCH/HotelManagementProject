@@ -38,4 +38,10 @@ public interface EventBusClient {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     BookingCanceledEvent processBookingCanceledEvent(BookingCanceledEvent event);
+
+    @POST
+    @Path("/bookingPaid")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    BookingPaidEvent processBookingPaidEvent(BookingPaidEvent event);
 }

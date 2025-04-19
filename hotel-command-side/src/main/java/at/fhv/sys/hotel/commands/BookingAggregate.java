@@ -2,12 +2,14 @@ package at.fhv.sys.hotel.commands;
 
 import at.fhv.sys.hotel.client.EventBusClient;
 import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
+import at.fhv.sys.hotel.commands.shared.events.BookingPaidEvent;
 import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logmanager.Logger;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class BookingAggregate {
         );
 
         bookings.add(event);
-
+        Logger.getAnonymousLogger().info(bookings.toString());
         Logger.getAnonymousLogger().info(eventClient.processRoomBookedEvent(event).toString());
 
         return command.bookingId();
@@ -61,6 +63,31 @@ public class BookingAggregate {
 
         Logger.getAnonymousLogger().info(eventClient.processBookingCanceledEvent(event).toString());
 
-        return command.bookingId();
+        return bookingId;
+    }
+
+    public String handlePayBooking(String bookingId, PayBookingCommand command) {
+
+        boolean exists = bookings.stream()
+                .anyMatch(event -> event.getBookingId().equals(bookingId));
+
+        if (!exists) {
+            throw new IllegalStateException("No booking found for bookingId: " + bookingId);
+        }
+
+        BookingPaidEvent event = new BookingPaidEvent(
+                command.paymentId(),
+                bookingId,
+                command.paidAt(),
+                command.paymentMethod(),
+                command.amount()
+        );
+
+        Logger.getAnonymousLogger().info(eventClient.processBookingPaidEvent(event).toString());
+
+        return bookingId;
+    }
+
+    public void handlePayBooking(String bookingId, LocalDateTime localDateTime, String s, String amount) {
     }
 }

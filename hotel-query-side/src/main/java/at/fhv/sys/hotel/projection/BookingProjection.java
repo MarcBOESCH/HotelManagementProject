@@ -1,6 +1,7 @@
 package at.fhv.sys.hotel.projection;
 
 import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
+import at.fhv.sys.hotel.commands.shared.events.BookingPaidEvent;
 import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import at.fhv.sys.hotel.models.BookingQueryPanacheModel;
 import at.fhv.sys.hotel.service.BookingServicePanache;
@@ -40,6 +41,18 @@ public class BookingProjection {
         if (booking != null) {
             booking.status = "CANCELED";
         }
+    }
 
+    @Transactional
+    public void processBookingPaidEvent(BookingPaidEvent bookingPaidEvent) {
+        Logger.getAnonymousLogger().info("Processing event: " + bookingPaidEvent);
+
+        BookingQueryPanacheModel booking = BookingQueryPanacheModel
+                .find("bookingId", bookingPaidEvent.getBookingId())
+                .firstResult();
+
+        if (booking != null) {
+            booking.status = "PAID";
+        }
     }
 }

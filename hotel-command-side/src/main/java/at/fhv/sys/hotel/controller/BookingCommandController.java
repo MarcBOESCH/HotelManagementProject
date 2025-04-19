@@ -3,6 +3,7 @@ package at.fhv.sys.hotel.controller;
 import at.fhv.sys.hotel.commands.BookRoomCommand;
 import at.fhv.sys.hotel.commands.BookingAggregate;
 import at.fhv.sys.hotel.commands.CancelBookingCommand;
+import at.fhv.sys.hotel.commands.PayBookingCommand;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -32,6 +33,13 @@ public class BookingCommandController {
     @Path("/{bookingId}/cancel")
     public Response cancelBooking(@PathParam("bookingId") String bookingId) {
         bookingAggregate.handleCancelBooking(new CancelBookingCommand(bookingId));
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/{bookingId}/pay")
+    public Response payBooking(@PathParam("bookingId") String bookingId, @Valid PayBookingCommand command) {
+        bookingAggregate.handlePayBooking(bookingId, command);
         return Response.noContent().build();
     }
 }

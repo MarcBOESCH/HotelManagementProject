@@ -38,5 +38,8 @@ public interface QueryClient {
     @Consumes(MediaType.APPLICATION_JSON)
     void forwardBookingCanceledEvent(BookingCanceledEvent event);
 
-
+    @POST
+    @Path("/bookingPaid")
+    @Consumes(MediaType.APPLICATION_JSON)
+    void forwardBookingPaidEvent(BookingPaidEvent event);
 }

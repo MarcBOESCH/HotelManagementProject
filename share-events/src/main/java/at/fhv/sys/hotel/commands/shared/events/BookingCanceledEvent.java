@@ -18,6 +18,8 @@ public class BookingCanceledEvent {
         this.bookingId = bookingId;
     }
 
+    // TODO Override equals() and hashCode()
+
     @Override
     public String toString() {
         return "BookingCanceledEvent{bookingId= '" + bookingId + "'}";
