@@ -1,10 +1,12 @@
 package at.fhv.sys.hotel.projection;
 
+import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
 import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import at.fhv.sys.hotel.models.BookingQueryPanacheModel;
 import at.fhv.sys.hotel.service.BookingServicePanache;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.jboss.logmanager.Logger;
 
 @ApplicationScoped
@@ -25,5 +27,19 @@ public class BookingProjection {
         booking.status = "BOOKED";
 
         bookingServicePanache.bookRoom(booking);
+    }
+
+    @Transactional
+    public void processBookingCanceledEvent(BookingCanceledEvent bookingCanceledEvent) {
+        Logger.getAnonymousLogger().info("Processing event: " + bookingCanceledEvent);
+
+        BookingQueryPanacheModel booking = BookingQueryPanacheModel
+                .find("bookingId", bookingCanceledEvent.getBookingId())
+                .firstResult();
+
+        if (booking != null) {
+            booking.status = "CANCELED";
+        }
+
     }
 }

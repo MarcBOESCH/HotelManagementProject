@@ -1,6 +1,7 @@
 package at.fhv.sys.hotel.commands;
 
 import at.fhv.sys.hotel.client.EventBusClient;
+import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
 import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -44,6 +45,21 @@ public class BookingAggregate {
         bookings.add(event);
 
         Logger.getAnonymousLogger().info(eventClient.processRoomBookedEvent(event).toString());
+
+        return command.bookingId();
+    }
+
+    public String handleCancelBooking(CancelBookingCommand command) {
+        String bookingId = command.bookingId();
+
+        boolean exists = bookings.removeIf(event -> event.getBookingId().equals(bookingId));
+        if (!exists) {
+            throw new IllegalStateException("No booking found for bookingId: " + bookingId);
+        }
+
+        BookingCanceledEvent event = new BookingCanceledEvent(command.bookingId());
+
+        Logger.getAnonymousLogger().info(eventClient.processBookingCanceledEvent(event).toString());
 
         return command.bookingId();
     }

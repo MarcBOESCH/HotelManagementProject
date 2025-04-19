@@ -1,9 +1,6 @@
 package at.fhv.sys.hotel.client;
 
-import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
-import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
-import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
-import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
+import at.fhv.sys.hotel.commands.shared.events.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -35,4 +32,10 @@ public interface EventBusClient {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     RoomBookedEvent processRoomBookedEvent(RoomBookedEvent event);
+
+    @POST
+    @Path("/bookingCanceled")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    BookingCanceledEvent processBookingCanceledEvent(BookingCanceledEvent event);
 }

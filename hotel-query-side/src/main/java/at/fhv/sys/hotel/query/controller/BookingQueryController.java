@@ -1,5 +1,6 @@
 package at.fhv.sys.hotel.query.controller;
 
+import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
 import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import at.fhv.sys.hotel.models.BookingQueryPanacheModel;
 import at.fhv.sys.hotel.projection.BookingProjection;
@@ -32,6 +33,14 @@ public class BookingQueryController {
     public Response roomBooked(RoomBookedEvent event) {
         Logger.getAnonymousLogger().info("Received event: " + event);
         bookingProjection.processRoomBookedEvent(event);
+        return Response.ok(event).build();
+    }
+
+    @POST
+    @Path("/bookingCanceled")
+    public Response bookingCanceled(BookingCanceledEvent event) {
+        Logger.getAnonymousLogger().info("Received event: " + event);
+        bookingProjection.processBookingCanceledEvent(event);
         return Response.ok(event).build();
     }
 

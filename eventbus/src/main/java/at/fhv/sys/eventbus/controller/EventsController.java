@@ -1,10 +1,7 @@
 package at.fhv.sys.eventbus.controller;
 
 import at.fhv.sys.eventbus.services.EventProcessingService;
-import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
-import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
-import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
-import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
+import at.fhv.sys.hotel.commands.shared.events.*;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -50,7 +47,16 @@ public class EventsController {
     @Path("/roomBooked")
     public Response roomBooked(RoomBookedEvent event) {
         Logger.getAnonymousLogger().info("Received event: " + event);
-        eventStoreService.processRoomBookedEvent("room-" + event.getRoomNumber(), event);
+        eventStoreService.processRoomBookedEvent("booking-" + event.getBookingId(), event);
         return Response.ok(event).build();
     }
+
+    @POST
+    @Path("/bookingCanceled")
+    public Response bookingCanceled(BookingCanceledEvent event) {
+        Logger.getAnonymousLogger().info("Received event: " + event);
+        eventStoreService.processBookingCanceledEvent("booking-" + event.getBookingId(), event);
+        return Response.ok(event).build();
+    }
+
 }
