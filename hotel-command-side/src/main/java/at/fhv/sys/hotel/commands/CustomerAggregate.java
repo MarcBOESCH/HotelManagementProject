@@ -29,7 +29,7 @@ public class CustomerAggregate {
 
         Logger.getAnonymousLogger().info(eventClient.processCustomerCreatedEvent(event).toString());
 
-        return command.userId().toString();
+        return command.userId();
     }
 
     // TODO: Remove String customerId and read it from the command

@@ -4,6 +4,7 @@ import at.fhv.sys.eventbus.services.EventProcessingService;
 import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
 import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -42,6 +43,14 @@ public class EventsController {
     public Response customerDeleted(CustomerDeletedEvent event) {
         Logger.getAnonymousLogger().info("Received event: " + event);
         eventStoreService.processCustomerDeletedEvent("customer-" + event.getCustomerId(), event);
+        return Response.ok(event).build();
+    }
+
+    @POST
+    @Path("/roomBooked")
+    public Response roomBooked(RoomBookedEvent event) {
+        Logger.getAnonymousLogger().info("Received event: " + event);
+        eventStoreService.processRoomBookedEvent("room-" + event.getRoomNumber(), event);
         return Response.ok(event).build();
     }
 }
