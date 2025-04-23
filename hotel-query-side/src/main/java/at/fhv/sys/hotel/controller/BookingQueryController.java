@@ -1,4 +1,4 @@
-package at.fhv.sys.hotel.query.controller;
+package at.fhv.sys.hotel.controller;
 
 import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
 import at.fhv.sys.hotel.commands.shared.events.BookingPaidEvent;

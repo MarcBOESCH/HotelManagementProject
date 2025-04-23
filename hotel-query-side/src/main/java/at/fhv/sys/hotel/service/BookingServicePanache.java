@@ -11,7 +11,7 @@ import java.util.List;
 public class BookingServicePanache {
 
     public List<BookingQueryPanacheModel> getBookingsByDate(LocalDate from, LocalDate to) {
-        return BookingQueryPanacheModel.find("fromDate >= ?1 and toDate <= ?2", from, to).list();
+        return BookingQueryPanacheModel.find("fromDate <= ?2 and toDate >= ?1", from, to).list();
     }
 
     public BookingQueryPanacheModel getBookingById(String bookingId) {
