@@ -2,6 +2,7 @@ package at.fhv.sys.hotel.controller;
 
 import at.fhv.sys.hotel.commands.BookingAggregate;
 import at.fhv.sys.hotel.commands.CustomerAggregate;
+import at.fhv.sys.hotel.commands.RoomAggregate;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
@@ -20,11 +21,15 @@ public class DataCommandController {
     @Inject
     CustomerAggregate customerAggregate;
 
+    @Inject
+    RoomAggregate roomAggregate;
+
     @DELETE
     @Path("/command-models")
     public Response deleteCommandModels() {
         bookingAggregate.clear();
         customerAggregate.clear();
+        roomAggregate.clear();
         return Response.noContent().build();
     }
 }
