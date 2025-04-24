@@ -4,6 +4,9 @@ import at.fhv.sys.hotel.commands.BookRoomCommand;
 import at.fhv.sys.hotel.commands.BookingAggregate;
 import at.fhv.sys.hotel.commands.CancelBookingCommand;
 import at.fhv.sys.hotel.commands.PayBookingCommand;
+import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
+import at.fhv.sys.hotel.commands.shared.events.BookingPaidEvent;
+import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -40,6 +43,21 @@ public class BookingCommandController {
     @Path("/{bookingId}/pay")
     public Response payBooking(@PathParam("bookingId") String bookingId, @Valid PayBookingCommand command) {
         bookingAggregate.handlePayBooking(bookingId, command);
+        return Response.noContent().build();
+    }
+
+    //When replaying all events:
+    @POST
+    @Path("/roomBooked")
+    public Response roomBooked(RoomBookedEvent roomBookedEvent){
+        bookingAggregate.roomBooked(roomBookedEvent);
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/bookingCanceled")
+    public Response bookingCanceled(BookingCanceledEvent event){
+        bookingAggregate.bookingCanceled(event);
         return Response.noContent().build();
     }
 }

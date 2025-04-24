@@ -90,4 +90,26 @@ public class CustomerAggregate {
         Logger.getAnonymousLogger().info("All customers deleted");
     }
 
+    //When replaying Events:
+    public void customerCreated(CustomerCreatedEvent event){
+        customers.add(event);
+    }
+
+    public void customerUpdated(CustomerUpdatedEvent event){
+        CustomerCreatedEvent customerEvent = customers.stream()
+                .filter(customer -> customer.getUserId().equals(event.getUserId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No customer found for customerId: " + event.getUserId()));
+        event.getName().ifPresent(customerEvent::setName);
+        event.getEmail().ifPresent(customerEvent::setEmail);
+        event.getAddress().ifPresent(customerEvent::setAddress);
+        event.getBirthdate().ifPresent(customerEvent::setBirthdate);
+
+
+    }
+
+    public void customerDeleted(CustomerDeletedEvent event){
+        customers.removeIf(customer -> customer.getUserId().equals(event.getCustomerId()));
+    }
+
 }
