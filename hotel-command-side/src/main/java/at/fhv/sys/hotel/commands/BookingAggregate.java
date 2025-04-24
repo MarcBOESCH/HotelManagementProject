@@ -4,6 +4,7 @@ import at.fhv.sys.hotel.client.EventBusClient;
 import at.fhv.sys.hotel.commands.shared.events.BookingCanceledEvent;
 import at.fhv.sys.hotel.commands.shared.events.BookingPaidEvent;
 import at.fhv.sys.hotel.commands.shared.events.RoomBookedEvent;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -88,6 +89,10 @@ public class BookingAggregate {
         return bookingId;
     }
 
-    public void handlePayBooking(String bookingId, LocalDateTime localDateTime, String s, String amount) {
+    // Delete in-memory bookings
+    public void clear() {
+        Logger.getAnonymousLogger().info("Clearing all bookings");
+        bookings.clear();
+        Logger.getAnonymousLogger().info("All bookings deleted");
     }
 }
