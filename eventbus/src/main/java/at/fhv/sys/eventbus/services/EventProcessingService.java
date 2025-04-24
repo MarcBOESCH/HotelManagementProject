@@ -1,5 +1,6 @@
 package at.fhv.sys.eventbus.services;
 
+import at.fhv.sys.eventbus.client.CommandClient;
 import at.fhv.sys.eventbus.client.QueryClient;
 import at.fhv.sys.hotel.commands.shared.events.*;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,6 +16,10 @@ public class EventProcessingService {
     @Inject
     @RestClient
     QueryClient queryClient;
+
+    @Inject
+    @RestClient
+    CommandClient commandClient;
 
     @Inject
     EventStoreService eventStoreService;
@@ -64,14 +69,19 @@ public class EventProcessingService {
         for (Object evt: events) {
             if (evt instanceof CustomerCreatedEvent customerCreatedEvent) {
                 queryClient.forwardCustomerCreatedEvent(customerCreatedEvent);
+                commandClient.forwardCustomerCreatedEvent(customerCreatedEvent);
             } else if (evt instanceof CustomerUpdatedEvent customerUpdatedEvent) {
                 queryClient.forwardCustomerUpdatedEvent(customerUpdatedEvent);
+                commandClient.forwardCustomerUpdatedEvent(customerUpdatedEvent);
             } else if (evt instanceof CustomerDeletedEvent customerDeletedEvent) {
                 queryClient.forwardCustomerDeletedEvent(customerDeletedEvent);
+                commandClient.forwardCustomerDeletedEvent(customerDeletedEvent);
             } else if (evt instanceof RoomBookedEvent roomBookedEvent) {
                 queryClient.forwardRoomBookedEvent(roomBookedEvent);
+                commandClient.forwardRoomBookedEvent(roomBookedEvent);
             } else if (evt instanceof BookingCanceledEvent bookingCanceledEvent) {
                 queryClient.forwardBookingCanceledEvent(bookingCanceledEvent);
+                commandClient.forwardBookingCanceledEvent(bookingCanceledEvent);
             } else if (evt instanceof BookingPaidEvent bookingPaidEvent) {
                 queryClient.forwardBookingPaidEvent(bookingPaidEvent);
             } else {

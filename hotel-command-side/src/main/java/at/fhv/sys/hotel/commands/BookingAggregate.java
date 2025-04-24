@@ -102,4 +102,14 @@ public class BookingAggregate {
         bookings.clear();
         Logger.getAnonymousLogger().info("All bookings deleted");
     }
+
+    //When replaying events:
+    public void roomBooked(RoomBookedEvent event){
+        bookings.add(event);
+    }
+
+    public void bookingCanceled(BookingCanceledEvent event){
+        String bookingId = event.getBookingId();
+        bookings.removeIf(evt -> evt.getBookingId().equals(bookingId));
+    }
 }

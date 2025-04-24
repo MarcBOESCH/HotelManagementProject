@@ -4,6 +4,9 @@ import at.fhv.sys.hotel.commands.CreateCustomerCommand;
 import at.fhv.sys.hotel.commands.CustomerAggregate;
 import at.fhv.sys.hotel.commands.DeleteCustomerCommand;
 import at.fhv.sys.hotel.commands.UpdateCustomerCommand;
+import at.fhv.sys.hotel.commands.shared.events.CustomerCreatedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerDeletedEvent;
+import at.fhv.sys.hotel.commands.shared.events.CustomerUpdatedEvent;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -42,6 +45,29 @@ public class CustomerCommandController {
     @Path("/{customerId}/delete")
     public Response deleteCustomer(@PathParam("customerId") String customerId) {
         customerAggregate.handleDeleteCustomer(new DeleteCustomerCommand(customerId));
+        return Response.noContent().build();
+    }
+
+    //When replaying Events:
+
+    @POST
+    @Path("/customerCreated")
+    public Response customerCreated(CustomerCreatedEvent customerCreatedEvent){
+        customerAggregate.customerCreated(customerCreatedEvent);
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/customerUpdated")
+    public Response customerUpdated(CustomerUpdatedEvent customerUpdatedEvent){
+        customerAggregate.customerUpdated(customerUpdatedEvent);
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/customerDeleted")
+    public Response customerDeleted(CustomerDeletedEvent customerDeletedEvent){
+        customerAggregate.customerDeleted(customerDeletedEvent);
         return Response.noContent().build();
     }
 }
