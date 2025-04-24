@@ -21,6 +21,9 @@ public class BookingAggregate {
     @RestClient
     EventBusClient eventClient;
 
+    @Inject
+    CustomerAggregate customerAggregate;
+
     // Stores all bookings
     private final List<RoomBookedEvent> bookings = new ArrayList<>();
 
@@ -35,6 +38,10 @@ public class BookingAggregate {
 
         if (unavailable) {
             throw new IllegalArgumentException("Room " + command.roomNumber() + " is not available in the selected time period");
+        }
+
+        if(!customerAggregate.customerExists(command.customerId())){
+            throw new IllegalStateException("Customer with ID " + command.customerId() + " does not exist.");
         }
 
         RoomBookedEvent event = new RoomBookedEvent(

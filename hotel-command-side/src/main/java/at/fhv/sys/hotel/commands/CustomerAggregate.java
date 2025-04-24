@@ -23,7 +23,15 @@ public class CustomerAggregate {
 
     private final List<CustomerCreatedEvent> customers = new ArrayList<>();
 
+    public boolean customerExists(String customerID){
+        return customers.stream()
+                .anyMatch(c -> c.getUserId().equals(customerID));
+    }
+
     public String handleCreateCustomer(CreateCustomerCommand command) {
+         if(customerExists(command.userId())){
+            throw new IllegalArgumentException("Customer with customerID " + command.userId() + " already exists.");
+        }
         CustomerCreatedEvent event = new CustomerCreatedEvent(
                 command.userId(),
                 command.name(),

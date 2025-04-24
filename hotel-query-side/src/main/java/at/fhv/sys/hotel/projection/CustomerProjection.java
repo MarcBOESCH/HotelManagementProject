@@ -22,10 +22,25 @@ public class CustomerProjection {
 
         CustomerQueryPanacheModel customer = new CustomerQueryPanacheModel();
         customer.userId = customerCreatedEvent.getUserId();
+        if (customer.userId == null || customer.userId.trim().isEmpty()){
+            throw new IllegalArgumentException("User ID is null");
+        }
         customer.name = customerCreatedEvent.getName();
+        if (customer.name == null || customer.name.trim().isEmpty()){
+            throw new IllegalArgumentException("Name is null");
+        }
         customer.email = customerCreatedEvent.getEmail();
+        if (customer.email == null || customer.email.trim().isEmpty()){
+            throw new IllegalArgumentException("Email is null");
+        }
         customer.address = customerCreatedEvent.getAddress();
+        if (customer.address == null || customer.address.trim().isEmpty()){
+            throw new IllegalArgumentException("Address is null");
+        }
         customer.birthdate = customerCreatedEvent.getBirthdate();
+        if (customer.birthdate == null){
+            throw new IllegalArgumentException("Birthdate is null");
+        }
 
         customerServicePanache.createCustomer(customer);
     }
