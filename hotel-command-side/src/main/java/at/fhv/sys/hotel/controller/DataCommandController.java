@@ -49,7 +49,11 @@ public class DataCommandController {
         );
 
         CreateRoomCommand createRoomCommand3 = new CreateRoomCommand(
-                "3", 2, "Jesse´s geheimer Raum", true, 69.00
+                "3",
+                2,
+                "Jesse´s geheimer Raum",
+                true,
+                69.00
         );
         roomAggregate.handleCreateRoom(createRoomCommand1);
         roomAggregate.handleCreateRoom(createRoomCommand2);
