@@ -6,6 +6,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 @ApplicationScoped
 public class EventProcessingService {
 
@@ -48,5 +51,27 @@ public class EventProcessingService {
     public void processBookingPaidEvent(String stream, Object eventObject) {
         queryClient.forwardBookingPaidEvent((BookingPaidEvent) eventObject);
         eventStoreService.saveEvent(stream, eventObject);
+    }
+
+    public void replayAllEvents() {
+        List<Object> events = eventStoreService.getAllEvents();
+
+        for (Object evt: events) {
+            if (evt instanceof CustomerCreatedEvent customerCreatedEvent) {
+                queryClient.forwardCustomerCreatedEvent(customerCreatedEvent);
+            } else if (evt instanceof CustomerUpdatedEvent customerUpdatedEvent) {
+                queryClient.forwardCustomerUpdatedEvent(customerUpdatedEvent);
+            } else if (evt instanceof CustomerDeletedEvent customerDeletedEvent) {
+                queryClient.forwardCustomerDeletedEvent(customerDeletedEvent);
+            } else if (evt instanceof RoomBookedEvent roomBookedEvent) {
+                queryClient.forwardRoomBookedEvent(roomBookedEvent);
+            } else if (evt instanceof BookingCanceledEvent bookingCanceledEvent) {
+                queryClient.forwardBookingCanceledEvent(bookingCanceledEvent);
+            } else if (evt instanceof BookingPaidEvent bookingPaidEvent) {
+                queryClient.forwardBookingPaidEvent(bookingPaidEvent);
+            } else {
+                Logger.getAnonymousLogger().info("Unknown event type" + evt);
+            }
+        }
     }
 }

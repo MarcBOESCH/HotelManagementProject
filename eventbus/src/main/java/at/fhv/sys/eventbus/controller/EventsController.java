@@ -29,10 +29,17 @@ public class EventsController {
     }
 
     @GET
-    @Path("/events")
+    @Path("/getAllEvents")
     public Response getAllEvents() {
         List<Object> domainEvents = eventStoreService.getAllEvents();
         return Response.ok(domainEvents).build();
+    }
+
+    @POST
+    @Path("/replayAllEvents")
+    public Response replayAllEvents() {
+        new Thread(eventProcessingService::replayAllEvents).start();
+        return Response.accepted().build();
     }
 
     @POST
