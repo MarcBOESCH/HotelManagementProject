@@ -23,6 +23,11 @@ public class EventProcessingService {
     public EventProcessingService() {
     }
 
+    public void processRoomCreatedEvent(String stream, Object eventObject) {
+        queryClient.forwardRoomCreatedEvent((RoomCreatedEvent) eventObject);
+        eventStoreService.saveEvent(stream, eventObject);
+    }
+
     public void processCustomerCreatedEvent(String stream, Object eventObject) {
         queryClient.forwardCustomerCreatedEvent((CustomerCreatedEvent) eventObject);
         eventStoreService.saveEvent(stream, eventObject);

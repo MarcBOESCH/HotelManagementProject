@@ -7,6 +7,11 @@ import java.util.List;
 
 @ApplicationScoped
 public class RoomServicePanache {
+
+    public void createRoom(RoomQueryPanacheModel room) {
+        room.persist();
+    }
+
     public List<RoomQueryPanacheModel> getAllRooms() {
         return RoomQueryPanacheModel.listAll();
     }

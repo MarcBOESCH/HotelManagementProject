@@ -43,6 +43,13 @@ public class EventsController {
     }
 
     @POST
+    @Path("/roomCreated")
+    public Response roomCreated(RoomCreatedEvent event) {
+        eventProcessingService.processRoomCreatedEvent("room-" + event.getRoomNumber(), event);
+        return Response.ok(event).build();
+    }
+
+    @POST
     @Path("/customerCreated")
     public Response customerCreated(CustomerCreatedEvent event) {
         Logger.getAnonymousLogger().info("Received event: " + event);

@@ -1,16 +1,21 @@
 package at.fhv.sys.hotel.controller;
 
+import at.fhv.sys.hotel.commands.shared.events.RoomCreatedEvent;
 import at.fhv.sys.hotel.models.BookingQueryPanacheModel;
 import at.fhv.sys.hotel.models.RoomQueryPanacheModel;
+import at.fhv.sys.hotel.projection.RoomProjection;
 import at.fhv.sys.hotel.service.BookingServicePanache;
 import at.fhv.sys.hotel.service.RoomServicePanache;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Path("/api")
@@ -19,13 +24,30 @@ import java.util.stream.Collectors;
 public class RoomQueryController {
 
     @Inject
+    RoomProjection roomProjection;
+
+    @Inject
     RoomServicePanache roomService;
 
     @Inject
     BookingServicePanache bookingService;
 
+    @POST
+    @Path("/roomCreated")
+    public Response roomCreated(RoomCreatedEvent event) {
+        Logger.getAnonymousLogger().info("Received event: " + event);
+        roomProjection.processRoomCreatedEvent(event);
+        return Response.ok(event).build();
+    }
+
     @GET
-    @Path("/rooms")
+    @Path("/getAllRooms")
+    public List<RoomQueryPanacheModel> getAllRooms() {
+        return roomService.getAllRooms();
+    }
+
+    @GET
+    @Path("/getFreeRooms")
     public List<RoomQueryPanacheModel> getFreeRooms(
             @QueryParam("from") String fromStr,
             @QueryParam("to") String toStr,

@@ -14,6 +14,11 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 public interface QueryClient {
 
     @POST
+    @Path("/roomCreated")
+    @Consumes(MediaType.APPLICATION_JSON)
+    void forwardRoomCreatedEvent(RoomCreatedEvent event);
+
+    @POST
     @Path("/customerCreated")
     @Consumes(MediaType.APPLICATION_JSON)
     void forwardCustomerCreatedEvent(CustomerCreatedEvent event);
