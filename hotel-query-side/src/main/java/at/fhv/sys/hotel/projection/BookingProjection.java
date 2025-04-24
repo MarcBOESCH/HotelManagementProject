@@ -21,11 +21,27 @@ public class BookingProjection {
 
         BookingQueryPanacheModel booking = new BookingQueryPanacheModel();
         booking.bookingId = roomBookedEvent.getBookingId();
+        if (booking.bookingId == null || booking.bookingId.trim().isEmpty()) {
+            throw new IllegalArgumentException("BookingID is null");
+        }
         booking.customerId = roomBookedEvent.getCustomerId();
+        if (booking.customerId == null || booking.customerId.trim().isEmpty()){
+            throw new IllegalArgumentException("CustomerID is null");
+        }
         booking.roomNumber = roomBookedEvent.getRoomNumber();
+        if (booking.roomNumber == null || booking.roomNumber.trim().isEmpty()){
+            throw new IllegalArgumentException("Room Number is null");
+        }
         booking.fromDate = roomBookedEvent.getFromDate();
+        if (booking.fromDate == null){
+            throw new IllegalArgumentException("From Date is null");
+        }
         booking.toDate = roomBookedEvent.getToDate();
+        if (booking.toDate == null){
+            throw new IllegalArgumentException("To Date is null");
+        }
         booking.status = "BOOKED";
+
 
         bookingServicePanache.bookRoom(booking);
     }
@@ -46,7 +62,6 @@ public class BookingProjection {
     @Transactional
     public void processBookingPaidEvent(BookingPaidEvent bookingPaidEvent) {
         Logger.getAnonymousLogger().info("Processing event: " + bookingPaidEvent);
-
         BookingQueryPanacheModel booking = BookingQueryPanacheModel
                 .find("bookingId", bookingPaidEvent.getBookingId())
                 .firstResult();
